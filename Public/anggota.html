@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="id">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Daftar Anggota Perpustakaan</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    :root {
+      --color-dark-navy: #001F3F;
+      --color-dark-green: #014D40;
+      --color-lime-green: #A2C11C;
+      --color-medium-lime-green: #C9DC40;
+      --color-white: #FFFFFF;
+    }
+  </style>
+</head>
+
+<body class="bg-white text-gray-900 font-sans min-h-screen flex flex-col">
+
+  <nav class="bg-[var(--color-dark-navy)] text-white px-6 py-4 flex justify-between items-center shadow-md">
+    <h1 class="text-xl font-bold tracking-wide">PerpustakaanKu</h1>
+    <ul class="flex gap-6">
+      <li><a href="index.html" class="hover:text-[var(--color-lime-green)] transition">Beranda</a></li>
+      <li><a href="anggota.html" class="hover:text-[var(--color-lime-green)] transition font-semibold">Anggota</a></li>
+    </ul>
+  </nav>
+
+  <header class="bg-[var(--color-medium-lime-green)] text-[var(--color-dark-navy)] px-6 py-12 flex flex-col items-center gap-6">
+    <h2 class="text-3xl font-extrabold tracking-wide text-center">Daftar Anggota Perpustakaan</h2>
+    <p class="max-w-xl text-center">Klik nama anggota untuk melihat detail lengkap.</p>
+  </header>
+
+  <main class="flex-grow px-6 py-10 bg-white max-w-7xl mx-auto">
+    <section>
+      <h3 class="text-[var(--color-dark-navy)] font-bold text-2xl mb-6">Daftar Anggota</h3>
+
+      <div id="memberList" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+        <!-- Daftar anggota akan muncul di sini -->
+      </div>
+    </section>
+  </main>
+
+  <footer class="bg-[var(--color-dark-navy)] text-white py-6 text-center">
+    <p>&copy; 2025 PerpustakaanKu. Semua hak cipta dilindungi.</p>
+  </footer>
+
+  <!-- Modal -->
+  <div id="modal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center hidden">
+    <div class="bg-white rounded-lg max-w-lg w-full p-6 relative shadow-lg">
+      <button onclick="closeModal()"
+        class="absolute top-3 right-3 text-gray-600 hover:text-gray-900 text-xl font-bold">&times;</button>
+      <h4 id="modalName" class="text-2xl font-bold mb-3 text-[var(--color-dark-navy)]"></h4>
+      <p id="modalEmail" class="mb-2"></p>
+      <p id="modalPhone" class="mb-2"></p>
+      <p id="modalAddress" class="text-gray-700"></p>
+    </div>
+  </div>
+
+  <script>
+    const memberListEl = document.getElementById("memberList");
+    const modalEl = document.getElementById("modal");
+    const modalName = document.getElementById("modalName");
+    const modalEmail = document.getElementById("modalEmail");
+    const modalPhone = document.getElementById("modalPhone");
+    const modalAddress = document.getElementById("modalAddress");
+
+    let members = [
+      { id: 1, name: "Rina Dewi", email: "rina@example.com", phone: "081234567890", address: "Jl. Melati No. 1, Bandung" },
+      { id: 2, name: "Budi Santoso", email: "budi@example.com", phone: "081234567891", address: "Jl. Anggrek No. 2, Jakarta" },
+      { id: 3, name: "Siti Aisyah", email: "siti@example.com", phone: "081234567892", address: "Jl. Mawar No. 3, Surabaya" },
+      { id: 4, name: "Andi Wijaya", email: "andi@example.com", phone: "081234567893", address: "Jl. Kenanga No. 4, Yogyakarta" }
+    ];
+
+    function renderMembers() {
+      memberListEl.innerHTML = "";
+
+      members.forEach(member => {
+        const card = document.createElement("div");
+        card.className = "border border-gray-300 rounded-lg shadow-sm hover:shadow-lg transition cursor-pointer";
+
+        card.innerHTML = `
+          <div class="p-4 flex flex-col items-start">
+            <h4 class="font-semibold text-lg text-[var(--color-dark-navy)] mb-1">${member.name}</h4>
+            <button class="bg-[var(--color-lime-green)] text-white px-3 py-1 rounded hover:bg-[var(--color-dark-green)] transition"
+              onclick="showMemberDetails(${member.id})">Lihat Detail</button>
+          </div>
+        `;
+        memberListEl.appendChild(card);
+      });
+    }
+
+    function showMemberDetails(memberId) {
+      const member = members.find(m => m.id === memberId);
+      if (!member) return;
+
+      modalName.textContent = member.name;
+      modalEmail.textContent = `Email: ${member.email}`;
+      modalPhone.textContent = `Telepon: ${member.phone}`;
+      modalAddress.textContent = `Alamat: ${member.address}`;
+
+      modalEl.classList.remove("hidden");
+    }
+
+    function closeModal() {
+      modalEl.classList.add("hidden");
+    }
+
+    window.onload = renderMembers;
+
+    modalEl.addEventListener("click", (e) => {
+      if (e.target === modalEl) closeModal();
+    });
+
+    window.addEventListener("keydown", (e) => {
+      if (e.key === "Escape" && !modalEl.classList.contains("hidden")) {
+        closeModal();
+      }
+    });
+  </script>
+
+</body>
+
+</html>

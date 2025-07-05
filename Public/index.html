@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Perpustakaan Buku</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    :root {
+      --color-dark-navy: #001F3F;
+      --color-dark-green: #014D40;
+      --color-lime-green: #A2C11C;
+      --color-medium-lime-green: #C9DC40;
+      --color-white: #FFFFFF;
+    }
+  </style>
+</head>
+<body class="bg-white text-gray-900 font-sans min-h-screen flex flex-col">
+
+  <nav class="bg-[var(--color-dark-navy)] text-white px-6 py-4 flex justify-between items-center shadow-md">
+    <h1 class="text-xl font-bold tracking-wide">PerpustakaanKu</h1>
+    <ul class="flex gap-6">
+      <li><a href="#" class="hover:text-[var(--color-lime-green)] transition">Beranda</a></li>
+      <li><a href="#" class="hover:text-[var(--color-lime-green)] transition">Katalog</a></li>
+      <li><a href="anggota.html" class="hover:text-[var(--color-lime-green)] transition">Anggota</a></li>
+      <li><a href="#" class="hover:text-[var(--color-lime-green)] transition">Tentang</a></li>
+    </ul>
+  </nav>
+
+  <header class="bg-[var(--color-medium-lime-green)] text-[var(--color-dark-navy)] px-6 py-12 flex flex-col items-center gap-6">
+    <h2 class="text-3xl font-extrabold tracking-wide">Selamat Datang di Manajemen Perpustakaan</h2>
+    <p class="max-w-xl text-center">Cari buku favoritmu dengan mudah dan kelola data perpustakaan dengan praktis.</p>
+
+    <form id="searchForm" class="w-full max-w-lg flex gap-3" onsubmit="return false;">
+      <input 
+        type="search" 
+        id="searchInput"
+        placeholder="Cari judul, pengarang, atau kategori..." 
+        class="flex-grow px-4 py-2 rounded-md border border-gray-300 focus:outline-none focus:ring-4 focus:ring-[var(--color-lime-green)] transition"
+        aria-label="Cari buku"
+      />
+      <button 
+        type="submit" 
+        class="bg-[var(--color-lime-green)] text-white px-5 py-2 rounded-md font-semibold hover:bg-[var(--color-dark-green)] transition"
+        onclick="searchBooks()"
+      >
+        Cari
+      </button>
+    </form>
+  </header>
+
+  <main class="flex-grow px-6 py-10 bg-white max-w-7xl mx-auto">
+    <section>
+      <h3 class="text-[var(--color-dark-navy)] font-bold text-2xl mb-6">Daftar Buku</h3>
+
+      <div id="bookList" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+      </div>
+    </section>
+  </main>
+
+  <footer class="bg-[var(--color-dark-navy)] text-white py-6 text-center">
+    <p>&copy; 2025 PerpustakaanKu. Semua hak cipta dilindungi.</p>
+  </footer>
+
+  <div id="modal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center hidden">
+    <div class="bg-white rounded-lg max-w-lg w-full p-6 relative shadow-lg">
+      <button onclick="closeModal()" class="absolute top-3 right-3 text-gray-600 hover:text-gray-900 text-xl font-bold">&times;</button>
+      <h4 id="modalTitle" class="text-2xl font-bold mb-3 text-[var(--color-dark-navy)]"></h4>
+      <p id="modalAuthor" class="mb-2"></p>
+      <p id="modalCategory" class="mb-2"></p>
+      <p id="modalDescription" class="text-gray-700"></p>
+    </div>
+  </div>
+
+<script>
+  const bookListEl = document.getElementById("bookList");
+  const modalEl = document.getElementById("modal");
+  const modalTitle = document.getElementById("modalTitle");
+  const modalAuthor = document.getElementById("modalAuthor");
+  const modalCategory = document.getElementById("modalCategory");
+  const modalDescription = document.getElementById("modalDescription");
+
+  let books = [];
+
+  async function fetchBooks() {
+  try {
+    const res = await fetch("http://localhost:5000/api/books"); 
+    if (!res.ok) throw new Error(`HTTP error! status: ${res.status}`);
+    const data = await res.json();
+
+    books = data.map((book, index) => ({
+      id: index,
+      title: book.title || "Tidak diketahui",
+      author: book.authors || "Tidak diketahui",
+      category: book.categories || "-",
+      description: book.description || "Deskripsi tidak tersedia",
+      image: book.image_url || "https://source.unsplash.com/featured/?book"
+    }));
+
+    renderBooks(books);
+  } catch (error) {
+    console.error("Gagal mengambil data buku:", error);
+    bookListEl.innerHTML = `<p class="text-center col-span-full text-red-600">Gagal mengambil data buku dari server.</p>`;
+  }
+}
+
+  function renderBooks(bookArray) {
+    bookListEl.innerHTML = "";
+    if (bookArray.length === 0) {
+      bookListEl.innerHTML = `<p class="text-center col-span-full text-gray-600">Buku tidak ditemukan.</p>`;
+      return;
+    }
+
+    bookArray.forEach(book => {
+      const card = document.createElement("div");
+      card.className = "border border-gray-300 rounded-lg shadow-sm hover:shadow-lg transition cursor-pointer";
+
+      card.innerHTML = `
+        <img src="${book.image}" alt="${book.title}" class="w-full h-48 object-cover rounded-t-lg" />
+        <div class="p-4">
+          <h4 class="font-semibold text-lg text-[var(--color-dark-navy)] mb-1">${book.title}</h4>
+          <p class="text-gray-600 mb-1">${book.author}</p>
+          <p class="text-gray-600 mb-2">${book.category}</p>
+          <button 
+            class="bg-[var(--color-lime-green)] text-white px-3 py-1 rounded hover:bg-[var(--color-dark-green)] transition"
+            onclick="showDetails(${book.id})"
+          >Detail</button>
+        </div>
+      `;
+      bookListEl.appendChild(card);
+    });
+  }
+
+  function showDetails(bookId) {
+    const book = books.find(b => b.id === bookId);
+    if (!book) return;
+
+    modalTitle.textContent = book.title;
+    modalAuthor.textContent = `Penulis: ${book.author}`;
+    modalCategory.textContent = `Kategori: ${book.category}`;
+    modalDescription.textContent = book.description;
+
+    modalEl.classList.remove("hidden");
+  }
+
+  function closeModal() {
+    modalEl.classList.add("hidden");
+  }
+
+  function searchBooks() {
+    const query = document.getElementById("searchInput").value.toLowerCase().trim();
+    if (query === "") {
+      renderBooks(books);
+      return;
+    }
+
+    const filtered = books.filter(book =>
+      book.title.toLowerCase().includes(query) ||
+      book.author.toLowerCase().includes(query) ||
+      book.category.toLowerCase().includes(query)
+    );
+
+    renderBooks(filtered);
+  }
+
+  window.onload = fetchBooks;
+
+  modalEl.addEventListener("click", (e) => {
+    if (e.target === modalEl) closeModal();
+  });
+
+  window.addEventListener("keydown", (e) => {
+    if (e.key === "Escape" && !modalEl.classList.contains("hidden")) {
+      closeModal();
+    }
+  });
+</script>
+
+</body>
+</html>

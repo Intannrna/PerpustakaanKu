@@ -1,0 +1,72 @@
+[
+  {
+    "title": "The Hunger Games",
+    "authors": "Suzanne Collins",
+    "categories": "Fiction",
+    "description": "A thrilling adventure book set in a dystopian world.",
+    "image_url": "http://localhost:3000/image/The Hunger Games.jpg"
+  },
+  {
+    "title": "Harry Potter and the Sorcerer's Stone",
+    "authors": "J.K. Rowling",
+    "categories": "Fantasy",
+    "description": "The first book in the Harry Potter series.",
+    "image_url": "http://localhost:3000/image/Harry Potter and the Sorcerer's Stone.jpg"
+  },
+  {
+    "title": "A Brief History of Time",
+    "authors": "Stephen Hawking",
+    "categories": "Science",
+    "description": "A landmark volume in science writing.",
+    "image_url": "http://localhost:3000/image/A Brief History of Time.jpg"
+  },
+  {
+    "title": "The Great Gatsby",
+    "authors": "F. Scott Fitzgerald",
+    "categories": "Classic",
+    "description": "A story about the American dream and tragedy.",
+    "image_url": "http://localhost:3000/image/The Great Gatsby.jpg"
+  },
+  {
+    "title": "Steve Jobs",
+    "authors": "Walter Isaacson",
+    "categories": "Biography",
+    "description": "The biography of Apple co-founder Steve Jobs.",
+    "image_url": "http://localhost:3000/image/Steve Jobs.jpg"
+  },
+  {
+    "title": "To Kill a Mockingbird",
+    "authors": "Harper Lee",
+    "categories": "Classic",
+    "description": "A novel about racial injustice in the Deep South.",
+    "image_url": "http://localhost:3000/image/To Kill a Mockingbird.jpeg"
+  },
+  {
+    "title": "1984",
+    "authors": "George Orwell",
+    "categories": "Fiction",
+    "description": "A dystopian novel set in a totalitarian society.",
+    "image_url": "http://localhost:3000/image/1984.jpg"
+  },
+  {
+    "title": "Bumi",
+    "authors": "Tere Liye",
+    "categories": "Fantasy",
+    "description": "Petualangan anak remaja dengan kemampuan unik di dunia paralel.",
+    "image_url": "http://localhost:3000/image/Bumi.jpg"
+  },
+  {
+    "title": "Atomic Habits",
+    "authors": "James Clear",
+    "categories": "Self-Development",
+    "description": "Buku tentang membentuk kebiasaan kecil yang berdampak besar dalam hidup.",
+    "image_url": "http://localhost:3000/image/Atomic Habits.jpg"
+  },
+  {
+    "title": "Rich Dad Poor Dad",
+    "authors": "Robert T. Kiyosaki",
+    "categories": "Finance",
+    "description": "Pelajaran finansial praktis tentang cara berpikir orang kaya.",
+    "image_url": "http://localhost:3000/image/Rich Dad Poor Dad.jpg"
+  }
+]
