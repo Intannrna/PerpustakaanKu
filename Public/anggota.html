@@ -44,7 +44,6 @@
     <p>&copy; 2025 PerpustakaanKu. Semua hak cipta dilindungi.</p>
   </footer>
 
-  <!-- Modal Detail Anggota -->
   <div id="modal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center hidden">
     <div class="bg-white rounded-lg max-w-lg w-full p-6 relative shadow-lg overflow-y-auto max-h-[80vh]">
       <button onclick="closeModal()" class="absolute top-3 right-3 text-gray-600 hover:text-gray-900 text-xl font-bold">&times;</button>
@@ -100,7 +99,6 @@
       modalPhone.textContent = `Telepon: ${member.phone}`;
       modalAddress.textContent = `Alamat: ${member.address}`;
 
-      // Tampilkan daftar buku yang pernah dipinjam
       modalBorrowedBooks.innerHTML = "";
       if (member.borrowedBooks.length === 0) {
         modalBorrowedBooks.innerHTML = `<li class="text-gray-500 italic">Belum pernah meminjam buku.</li>`;
