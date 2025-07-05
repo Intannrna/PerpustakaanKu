@@ -34,10 +34,8 @@
 
   <main class="flex-grow px-6 py-10 bg-white max-w-7xl mx-auto">
     <section>
-      <h3 class="text-[var(--color-dark-navy)] font-bold text-2xl mb-6">Daftar Anggota</h3>
 
       <div id="memberList" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
-        <!-- Daftar anggota akan muncul di sini -->
       </div>
     </section>
   </main>
@@ -46,15 +44,16 @@
     <p>&copy; 2025 PerpustakaanKu. Semua hak cipta dilindungi.</p>
   </footer>
 
-  <!-- Modal -->
+  <!-- Modal Detail Anggota -->
   <div id="modal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center hidden">
-    <div class="bg-white rounded-lg max-w-lg w-full p-6 relative shadow-lg">
-      <button onclick="closeModal()"
-        class="absolute top-3 right-3 text-gray-600 hover:text-gray-900 text-xl font-bold">&times;</button>
+    <div class="bg-white rounded-lg max-w-lg w-full p-6 relative shadow-lg overflow-y-auto max-h-[80vh]">
+      <button onclick="closeModal()" class="absolute top-3 right-3 text-gray-600 hover:text-gray-900 text-xl font-bold">&times;</button>
       <h4 id="modalName" class="text-2xl font-bold mb-3 text-[var(--color-dark-navy)]"></h4>
       <p id="modalEmail" class="mb-2"></p>
       <p id="modalPhone" class="mb-2"></p>
-      <p id="modalAddress" class="text-gray-700"></p>
+      <p id="modalAddress" class="mb-4"></p>
+      <h5 class="font-semibold text-lg mb-2">Buku yang Pernah Dipinjam:</h5>
+      <ul id="modalBorrowedBooks" class="list-disc list-inside text-gray-700 space-y-1"></ul>
     </div>
   </div>
 
@@ -65,12 +64,13 @@
     const modalEmail = document.getElementById("modalEmail");
     const modalPhone = document.getElementById("modalPhone");
     const modalAddress = document.getElementById("modalAddress");
+    const modalBorrowedBooks = document.getElementById("modalBorrowedBooks");
 
     let members = [
-      { id: 1, name: "Rina Dewi", email: "rina@example.com", phone: "081234567890", address: "Jl. Melati No. 1, Bandung" },
-      { id: 2, name: "Budi Santoso", email: "budi@example.com", phone: "081234567891", address: "Jl. Anggrek No. 2, Jakarta" },
-      { id: 3, name: "Siti Aisyah", email: "siti@example.com", phone: "081234567892", address: "Jl. Mawar No. 3, Surabaya" },
-      { id: 4, name: "Andi Wijaya", email: "andi@example.com", phone: "081234567893", address: "Jl. Kenanga No. 4, Yogyakarta" }
+      { id: 1, name: "Rina Dewi", email: "rina@example.com", phone: "081234567890", address: "Jl. Melati No. 1, Bandung", borrowedBooks: ["Laskar Pelangi", "Harry Potter", "To Kill a Mockingbird"] },
+      { id: 2, name: "Budi Santoso", email: "budi@example.com", phone: "081234567891", address: "Jl. Anggrek No. 2, Jakarta", borrowedBooks: ["Atomic Habits", "Rich Dad Poor Dad"] },
+      { id: 3, name: "Siti Aisyah", email: "siti@example.com", phone: "081234567892", address: "Jl. Mawar No. 3, Surabaya", borrowedBooks: ["Dilan 1990", "The Hunger Games"] },
+      { id: 4, name: "Andi Wijaya", email: "andi@example.com", phone: "081234567893", address: "Jl. Kenanga No. 4, Yogyakarta", borrowedBooks: [] }
     ];
 
     function renderMembers() {
@@ -99,6 +99,18 @@
       modalEmail.textContent = `Email: ${member.email}`;
       modalPhone.textContent = `Telepon: ${member.phone}`;
       modalAddress.textContent = `Alamat: ${member.address}`;
+
+      // Tampilkan daftar buku yang pernah dipinjam
+      modalBorrowedBooks.innerHTML = "";
+      if (member.borrowedBooks.length === 0) {
+        modalBorrowedBooks.innerHTML = `<li class="text-gray-500 italic">Belum pernah meminjam buku.</li>`;
+      } else {
+        member.borrowedBooks.forEach(book => {
+          const listItem = document.createElement("li");
+          listItem.textContent = book;
+          modalBorrowedBooks.appendChild(listItem);
+        });
+      }
 
       modalEl.classList.remove("hidden");
     }
