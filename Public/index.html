@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="id">
+
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -15,35 +16,35 @@
     }
   </style>
 </head>
+
 <body class="bg-white text-gray-900 font-sans min-h-screen flex flex-col">
 
-  <nav class="bg-[var(--color-dark-navy)] text-white px-6 py-4 flex justify-between items-center shadow-md">
+  <nav class="bg-[var(--color-dark-navy)] text-white px-6 py-4 flex justify-between items-center shadow-md relative">
     <h1 class="text-xl font-bold tracking-wide">PerpustakaanKu</h1>
-    <ul class="flex gap-6">
-      <li><a href="#" class="hover:text-[var(--color-lime-green)] transition">Beranda</a></li>
-      <li><a href="#" class="hover:text-[var(--color-lime-green)] transition">Katalog</a></li>
-      <li><a href="anggota.html" class="hover:text-[var(--color-lime-green)] transition">Anggota</a></li>
-      <li><a href="#" class="hover:text-[var(--color-lime-green)] transition">Tentang</a></li>
+
+    <button id="menuToggle" class="md:hidden text-2xl focus:outline-none">
+      &#9776;
+    </button>
+
+    <ul id="navMenu" class="hidden flex-col absolute top-full left-0 w-full bg-[var(--color-dark-navy)] md:flex md:static md:flex-row md:gap-6 md:w-auto">
+      <li><a href="#" class="block px-4 py-2 hover:text-[var(--color-lime-green)] transition">Beranda</a></li>
+      <li><a href="#" class="block px-4 py-2 hover:text-[var(--color-lime-green)] transition">Katalog</a></li>
+      <li><a href="anggota.html" class="block px-4 py-2 hover:text-[var(--color-lime-green)] transition">Anggota</a></li>
+      <li><a href="#" class="block px-4 py-2 hover:text-[var(--color-lime-green)] transition">Tentang</a></li>
     </ul>
   </nav>
 
   <header class="bg-[var(--color-medium-lime-green)] text-[var(--color-dark-navy)] px-6 py-12 flex flex-col items-center gap-6">
-    <h2 class="text-3xl font-extrabold tracking-wide">Selamat Datang di Manajemen Perpustakaan</h2>
+    <h2 class="text-3xl font-extrabold tracking-wide text-center">Selamat Datang di Manajemen Perpustakaan</h2>
     <p class="max-w-xl text-center">Cari buku favoritmu dengan mudah dan kelola data perpustakaan dengan praktis.</p>
 
-    <form id="searchForm" class="w-full max-w-lg flex gap-3" onsubmit="return false;">
-      <input 
-        type="search" 
-        id="searchInput"
-        placeholder="Cari judul, pengarang, atau kategori..." 
+    <form id="searchForm" class="w-full max-w-lg flex flex-col sm:flex-row gap-3" onsubmit="return false;">
+      <input type="search" id="searchInput" placeholder="Cari judul, pengarang, atau kategori..."
         class="flex-grow px-4 py-2 rounded-md border border-gray-300 focus:outline-none focus:ring-4 focus:ring-[var(--color-lime-green)] transition"
-        aria-label="Cari buku"
-      />
-      <button 
-        type="submit" 
+        aria-label="Cari buku" />
+      <button type="submit"
         class="bg-[var(--color-lime-green)] text-white px-5 py-2 rounded-md font-semibold hover:bg-[var(--color-dark-green)] transition"
-        onclick="searchBooks()"
-      >
+        onclick="searchBooks()">
         Cari
       </button>
     </form>
@@ -63,9 +64,11 @@
 
   <div id="modal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center hidden z-50">
     <div class="bg-white rounded-lg max-w-2xl w-full p-6 relative shadow-lg overflow-y-auto max-h-[90vh]">
-      <button onclick="closeModal()" class="absolute top-3 right-3 text-gray-600 hover:text-gray-900 text-xl font-bold">&times;</button>
+      <button onclick="closeModal()"
+        class="absolute top-3 right-3 text-gray-600 hover:text-gray-900 text-xl font-bold">&times;</button>
       <div class="flex flex-col lg:flex-row gap-6">
-        <div class="flex justify-center items-center bg-gray-100 rounded-lg overflow-hidden max-h-[400px] max-w-[300px] mx-auto">
+        <div
+          class="flex justify-center items-center bg-gray-100 rounded-lg overflow-hidden max-h-[400px] max-w-[300px] mx-auto">
           <img id="modalImage" src="" alt="Cover Buku" class="object-contain max-h-[400px]" />
         </div>
         <div>
@@ -73,10 +76,8 @@
           <p id="modalAuthor" class="mb-2 text-gray-700"></p>
           <p id="modalCategory" class="mb-2 text-gray-700"></p>
           <p id="modalDescription" class="text-gray-700 text-justify mb-4"></p>
-          <button 
-            onclick="pinjamBuku()"
-            class="bg-[var(--color-lime-green)] text-white px-4 py-2 rounded hover:bg-[var(--color-dark-green)] transition"
-          >
+          <button onclick="pinjamBuku()"
+            class="bg-[var(--color-lime-green)] text-white px-4 py-2 rounded hover:bg-[var(--color-dark-green)] transition">
             Pinjam Buku
           </button>
         </div>
@@ -84,128 +85,132 @@
     </div>
   </div>
 
-<script>
-  const bookListEl = document.getElementById("bookList");
-  const modalEl = document.getElementById("modal");
-  const modalTitle = document.getElementById("modalTitle");
-  const modalAuthor = document.getElementById("modalAuthor");
-  const modalCategory = document.getElementById("modalCategory");
-  const modalDescription = document.getElementById("modalDescription");
-  const modalImage = document.getElementById("modalImage");
+  <script>
+    const bookListEl = document.getElementById("bookList");
+    const modalEl = document.getElementById("modal");
+    const modalTitle = document.getElementById("modalTitle");
+    const modalAuthor = document.getElementById("modalAuthor");
+    const modalCategory = document.getElementById("modalCategory");
+    const modalDescription = document.getElementById("modalDescription");
+    const modalImage = document.getElementById("modalImage");
 
-  let books = [];
+    const menuToggle = document.getElementById('menuToggle');
+    const navMenu = document.getElementById('navMenu');
 
-  async function fetchBooks() {
-    try {
-      const res = await fetch("http://localhost:5000/api/books");
-      if (!res.ok) throw new Error(`HTTP error! status: ${res.status}`);
-      const data = await res.json();
-
-      books = data.map((book, index) => ({
-        id: index,
-        title: book.title || "Tidak diketahui",
-        author: book.authors || "Tidak diketahui",
-        category: book.categories || "-",
-        description: book.description || "Deskripsi tidak tersedia",
-        image: book.image_url || "https://source.unsplash.com/featured/?book"
-      }));
-
-      renderBooks(books);
-    } catch (error) {
-      console.error("Gagal mengambil data buku:", error);
-      bookListEl.innerHTML = `<p class="text-center col-span-full text-red-600">Gagal mengambil data buku dari server.</p>`;
-    }
-  }
-
-  function renderBooks(bookArray) {
-    bookListEl.innerHTML = "";
-    if (bookArray.length === 0) {
-      bookListEl.innerHTML = `<p class="text-center col-span-full text-gray-600">Buku tidak ditemukan.</p>`;
-      return;
-    }
-
-    bookArray.forEach(book => {
-      const card = document.createElement("div");
-      card.className = "border border-gray-300 rounded-lg shadow-sm hover:shadow-lg transition cursor-pointer";
-
-      card.innerHTML = `
-        <div class="flex justify-center items-center bg-gray-100 rounded-t-lg overflow-hidden" style="height: 300px;">
-          <img src="${book.image}" alt="${book.title}" class="object-contain max-h-full" />
-        </div>
-        <div class="p-4">
-          <h4 class="font-semibold text-lg text-[var(--color-dark-navy)] mb-1">${book.title}</h4>
-          <p class="text-gray-600 mb-1">${book.author}</p>
-          <p class="text-gray-600 mb-2">${book.category}</p>
-          <div class="flex gap-2">
-            <button 
-              class="bg-[var(--color-lime-green)] text-white px-3 py-1 rounded hover:bg-[var(--color-dark-green)] transition"
-              onclick="showDetails(${book.id})"
-            >Detail</button>
-            <button 
-              class="bg-[var(--color-dark-green)] text-white px-3 py-1 rounded hover:bg-[var(--color-dark-navy)] transition"
-              onclick="pinjamBukuLangsung('${book.title}')"
-            >Pinjam</button>
-          </div>
-        </div>
-      `;
-      bookListEl.appendChild(card);
+    menuToggle.addEventListener('click', () => {
+      navMenu.classList.toggle('hidden');
     });
-  }
 
-  function showDetails(bookId) {
-    const book = books.find(b => b.id === bookId);
-    if (!book) return;
+    let books = [];
 
-    modalTitle.textContent = book.title;
-    modalAuthor.textContent = `Penulis: ${book.author}`;
-    modalCategory.textContent = `Kategori: ${book.category}`;
-    modalDescription.textContent = book.description;
-    modalImage.src = book.image;
+    async function fetchBooks() {
+      try {
+        const res = await fetch("http://localhost:5000/api/books");
+        if (!res.ok) throw new Error(`HTTP error! status: ${res.status}`);
+        const data = await res.json();
 
-    modalEl.classList.remove("hidden");
-  }
+        books = data.map((book, index) => ({
+          id: index,
+          title: book.title || "Tidak diketahui",
+          author: book.authors || "Tidak diketahui",
+          category: book.categories || "-",
+          description: book.description || "Deskripsi tidak tersedia",
+          image: book.image_url || "https://source.unsplash.com/featured/?book"
+        }));
 
-  function closeModal() {
-    modalEl.classList.add("hidden");
-  }
-
-  function pinjamBuku() {
-    alert(`Anda telah meminjam buku "${modalTitle.textContent}".`);
-    closeModal();
-  }
-
-  function pinjamBukuLangsung(judul) {
-    alert(`Anda telah meminjam buku "${judul}".`);
-  }
-
-  function searchBooks() {
-    const query = document.getElementById("searchInput").value.toLowerCase().trim();
-    if (query === "") {
-      renderBooks(books);
-      return;
+        renderBooks(books);
+      } catch (error) {
+        console.error("Gagal mengambil data buku:", error);
+        bookListEl.innerHTML = `<p class="text-center col-span-full text-red-600">Gagal mengambil data buku dari server.</p>`;
+      }
     }
 
-    const filtered = books.filter(book =>
-      book.title.toLowerCase().includes(query) ||
-      book.author.toLowerCase().includes(query) ||
-      book.category.toLowerCase().includes(query)
-    );
+    function renderBooks(bookArray) {
+      bookListEl.innerHTML = "";
+      if (bookArray.length === 0) {
+        bookListEl.innerHTML = `<p class="text-center col-span-full text-gray-600">Buku tidak ditemukan.</p>`;
+        return;
+      }
 
-    renderBooks(filtered);
-  }
+      bookArray.forEach(book => {
+        const card = document.createElement("div");
+        card.className = "border border-gray-300 rounded-lg shadow-sm hover:shadow-lg transition cursor-pointer";
 
-  window.onload = fetchBooks;
+        card.innerHTML = `
+          <div class="flex justify-center items-center bg-gray-100 rounded-t-lg overflow-hidden" style="height: 300px;">
+            <img src="${book.image}" alt="${book.title}" class="object-contain max-h-full" />
+          </div>
+          <div class="p-4">
+            <h4 class="font-semibold text-lg text-[var(--color-dark-navy)] mb-1">${book.title}</h4>
+            <p class="text-gray-600 mb-1">${book.author}</p>
+            <p class="text-gray-600 mb-2">${book.category}</p>
+            <div class="flex gap-2">
+              <button class="bg-[var(--color-lime-green)] text-white px-3 py-1 rounded hover:bg-[var(--color-dark-green)] transition" onclick="showDetails(${book.id})">Detail</button>
+              <button class="bg-[var(--color-dark-green)] text-white px-3 py-1 rounded hover:bg-[var(--color-dark-navy)] transition" onclick="pinjamBukuLangsung('${book.title}')">Pinjam</button>
+            </div>
+          </div>
+        `;
+        bookListEl.appendChild(card);
+      });
+    }
 
-  modalEl.addEventListener("click", (e) => {
-    if (e.target === modalEl) closeModal();
-  });
+    
 
-  window.addEventListener("keydown", (e) => {
-    if (e.key === "Escape" && !modalEl.classList.contains("hidden")) {
+    function showDetails(bookId) {
+      const book = books.find(b => b.id === bookId);
+      if (!book) return;
+
+      modalTitle.textContent = book.title;
+      modalAuthor.textContent = `Penulis: ${book.author}`;
+      modalCategory.textContent = `Kategori: ${book.category}`;
+      modalDescription.textContent = book.description;
+      modalImage.src = book.image;
+
+      modalEl.classList.remove("hidden");
+    }
+
+    function closeModal() {
+      modalEl.classList.add("hidden");
+    }
+
+    function pinjamBuku() {
+      alert(`Anda telah meminjam buku "${modalTitle.textContent}".`);
       closeModal();
     }
-  });
-</script>
+
+    function pinjamBukuLangsung(judul) {
+      alert(`Anda telah meminjam buku "${judul}".`);
+    }
+
+    function searchBooks() {
+      const query = document.getElementById("searchInput").value.toLowerCase().trim();
+      if (query === "") {
+        renderBooks(books);
+        return;
+      }
+
+      const filtered = books.filter(book =>
+        book.title.toLowerCase().includes(query) ||
+        book.author.toLowerCase().includes(query) ||
+        book.category.toLowerCase().includes(query)
+      );
+
+      renderBooks(filtered);
+    }
+
+    window.onload = fetchBooks;
+
+    modalEl.addEventListener("click", (e) => {
+      if (e.target === modalEl) closeModal();
+    });
+
+    window.addEventListener("keydown", (e) => {
+      if (e.key === "Escape" && !modalEl.classList.contains("hidden")) {
+        closeModal();
+      }
+    });
+  </script>
 
 </body>
+
 </html>

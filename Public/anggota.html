@@ -19,24 +19,30 @@
 
 <body class="bg-white text-gray-900 font-sans min-h-screen flex flex-col">
 
-  <nav class="bg-[var(--color-dark-navy)] text-white px-6 py-4 flex justify-between items-center shadow-md">
+  <nav class="bg-[var(--color-dark-navy)] text-white px-6 py-4 flex justify-between items-center shadow-md relative">
     <h1 class="text-xl font-bold tracking-wide">PerpustakaanKu</h1>
-    <ul class="flex gap-6">
-      <li><a href="index.html" class="hover:text-[var(--color-lime-green)] transition">Beranda</a></li>
-      <li><a href="anggota.html" class="hover:text-[var(--color-lime-green)] transition font-semibold">Anggota</a></li>
+
+    <button id="menuToggle" class="md:hidden text-2xl focus:outline-none">
+      &#9776;
+    </button>
+
+    <ul id="navMenu"
+      class="hidden flex-col absolute top-full left-0 w-full bg-[var(--color-dark-navy)] md:flex md:static md:flex-row md:gap-6 md:w-auto">
+      <li><a href="index.html" class="block px-4 py-2 hover:text-[var(--color-lime-green)] transition">Beranda</a></li>
+      <li><a href="anggota.html"
+          class="block px-4 py-2 hover:text-[var(--color-lime-green)] transition font-semibold">Anggota</a></li>
     </ul>
   </nav>
 
-  <header class="bg-[var(--color-medium-lime-green)] text-[var(--color-dark-navy)] px-6 py-12 flex flex-col items-center gap-6">
+  <header
+    class="bg-[var(--color-medium-lime-green)] text-[var(--color-dark-navy)] px-6 py-12 flex flex-col items-center gap-6">
     <h2 class="text-3xl font-extrabold tracking-wide text-center">Daftar Anggota Perpustakaan</h2>
     <p class="max-w-xl text-center">Klik nama anggota untuk melihat detail lengkap.</p>
   </header>
 
   <main class="flex-grow px-6 py-10 bg-white max-w-7xl mx-auto">
     <section>
-
-      <div id="memberList" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
-      </div>
+      <div id="memberList" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6"></div>
     </section>
   </main>
 
@@ -44,9 +50,10 @@
     <p>&copy; 2025 PerpustakaanKu. Semua hak cipta dilindungi.</p>
   </footer>
 
-  <div id="modal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center hidden">
+  <div id="modal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center hidden z-50">
     <div class="bg-white rounded-lg max-w-lg w-full p-6 relative shadow-lg overflow-y-auto max-h-[80vh]">
-      <button onclick="closeModal()" class="absolute top-3 right-3 text-gray-600 hover:text-gray-900 text-xl font-bold">&times;</button>
+      <button onclick="closeModal()"
+        class="absolute top-3 right-3 text-gray-600 hover:text-gray-900 text-xl font-bold">&times;</button>
       <h4 id="modalName" class="text-2xl font-bold mb-3 text-[var(--color-dark-navy)]"></h4>
       <p id="modalEmail" class="mb-2"></p>
       <p id="modalPhone" class="mb-2"></p>
@@ -65,6 +72,13 @@
     const modalAddress = document.getElementById("modalAddress");
     const modalBorrowedBooks = document.getElementById("modalBorrowedBooks");
 
+    const menuToggle = document.getElementById('menuToggle');
+    const navMenu = document.getElementById('navMenu');
+
+    menuToggle.addEventListener('click', () => {
+      navMenu.classList.toggle('hidden');
+    });
+
     let members = [
       { id: 1, name: "Rina Dewi", email: "rina@example.com", phone: "081234567890", address: "Jl. Melati No. 1, Bandung", borrowedBooks: ["Laskar Pelangi", "Harry Potter", "To Kill a Mockingbird"] },
       { id: 2, name: "Budi Santoso", email: "budi@example.com", phone: "081234567891", address: "Jl. Anggrek No. 2, Jakarta", borrowedBooks: ["Atomic Habits", "Rich Dad Poor Dad"] },
@@ -77,10 +91,10 @@
 
       members.forEach(member => {
         const card = document.createElement("div");
-        card.className = "border border-gray-300 rounded-lg shadow-sm hover:shadow-lg transition cursor-pointer";
+        card.className = "border border-gray-300 rounded-lg shadow-sm hover:shadow-lg transition cursor-pointer flex flex-col justify-between";
 
         card.innerHTML = `
-          <div class="p-4 flex flex-col items-start">
+          <div class="p-4 flex flex-col gap-2">
             <h4 class="font-semibold text-lg text-[var(--color-dark-navy)] mb-1">${member.name}</h4>
             <button class="bg-[var(--color-lime-green)] text-white px-3 py-1 rounded hover:bg-[var(--color-dark-green)] transition"
               onclick="showMemberDetails(${member.id})">Lihat Detail</button>
